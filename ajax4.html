@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ajax json</title>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<style type="text/css">
+table {
+	width: 100%;
+	background: gold;	/*테이블의 배경색 지정*/
+}
+tr{
+	background: ivory;	/*테이블 행과열의 배경색 지정*/
+}
+th {
+    width:33%;
+	border: 1px solid salmon;
+	background: lightpink;/*th<>의 배경색 지정*/
+	color: tomato; /*text 컬러 변경*/
+}
+td { /*jquery로  들어가는 td<>에 적용되는 css*/
+	border: 1px solid salmon;
+	text-align: center; /*text 중앙정렬*/
+	color: blue; /*text 컬러 변경*/
+}
+</style>
+<script type="text/javascript">
+/* 	$.ajax({
+		type : "",
+		url : ""
+	}); */ //json으로 부터 메서드를 받아올것이기 때문에 ajax메서드를 사용할것이다 라고 선언한다.
+	//{type:"전송방식",url:"전송하는 내용이 담겨져있는 위치",dataType:"데이터 타입"}
+	$.ajax({
+		type : "GET", // 전송요청방식 GET vs POST
+		url : "ajax4.json",
+		dataType : "json",
+		success : function(data) { //데이터 전송이 성공했을때 function(){}수행
+			// data == Json_01.json의 전체 데이터 
+			// 화면에 데이터 내용을 출력
+			var str = ""; //tbody안에 작성할 str을 선언
+			$.each(data, function(index, obj) {
+                index++;
+                str += "<tr>";
+                str += "<td>" + index + "</td>";
+                str += "<td>" + obj.name + "</td>"; // 일반데이터여서 td<>로 처리 
+				str += "<td>" + obj.score1 + "</td>"; // 
+				str += "</tr>";
+			});
+			$("table tbody").append(str); //tbody에 str을 추가할꺼야 
+		},
+		error : function(xhr) { //데이터 전송이 실패했을때 function(){}수행
+			//console.log(xhr.status+" : " + xhr.errorText); // 콘솔로 확인하는 방법
+			alert("에러발생!"); // ㄴ동일
+		}
+	});
+</script>
+</head>
+<body>
+	<table>
+		<caption>Ajax json 데이터 입력</caption>
+		<!-- caption<> 자동으로 중앙정렬 -->
+		<thead><!--  구조를 기술하는 역할을 할뿐  영향을 주거나 하지는 않는다. -->
+			<tr>
+                <th>넘버(index)</th>
+				<th>이름</th>
+				<th>랜종류</th>
+			</tr>
+		</thead>
+		<tbody></tbody>
+	</table>
+</body>
+</html>

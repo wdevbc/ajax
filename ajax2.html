@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  </head>
+<body>
+
+<div id="demo">
+<h2>The XMLHttpRequest Object</h2>
+<button type="button" onclick="loadDoc()">Change Content</button>
+</div>
+
+<script>
+function loadDoc() {
+  const xhttp = new XMLHttpRequest();
+  xhttp.onload = function() {
+    document.getElementById("demo").innerHTML =
+    this.responseText;
+  }
+  xhttp.open("GET", "ajaxtest.txt");
+  xhttp.send();
+}
+</script>
+
+</body>
+</html>

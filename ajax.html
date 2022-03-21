@@ -1,0 +1,66 @@
+<?php
+$connection = mysqli_connect("localhost", "wdev", "pbc1990!", "wdev");    //DB 접속
+
+$query = "SELECT no, title, content, orderno FROM mari 
+ORDER BY orderno ASC, no DESC";     //orderno = 정렬된 숫자
+
+$result = mysqli_query($connection, $query);    //쿼리 실행
+$count = mysqli_num_rows($result);              //데이터의 rows 수
+?>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" ></script>
+    <style>
+        ul, li {list-style:none}
+        #mysortable li {line-height:30px;background-color:#ddd;padding-left:40px;font-size:20px;font-weight:bold;margin-top:10px;box-sizing:border-box;border:1px solid #aaa;}
+    </style>
+</head>
+
+<body>
+    <div class="faq-box">
+<ul id="mysortable">
+            <?php
+                for($i=0; $i<$count; $i++) {
+                    $row = mysqli_fetch_array($result);
+            ?>
+
+                <li id="faq-<?=$row['no']?>">  <!-- serialize로 faq라는 이름의 배열로 넘길 수 있습니다. -->
+                    <button class="accordion"> ▶ <?=$row['title']?></button>
+                    <div class="text">
+                        <p><?=$row['content']?></p>
+                    </div>
+                </li>
+
+            <?php
+                }
+            ?>
+        </ul>
+        </div>
+    <script type="text/javascript">
+    $(document).ready(function () {
+        $("#mysortable").sortable({
+    update: function() {
+        var data = $(this).sortable('serialize');
+
+        $.ajax({
+            type: "post",
+            url: "order.php",
+            data: data,
+            success: function () {
+                location.reload();    //페이지 새로고침
+            }
+        });
+    }
+});
+    });
+
+    </script>
+</body>
+</html>
